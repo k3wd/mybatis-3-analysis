@@ -44,7 +44,9 @@ public class XNode {
     this.node = node;
     this.name = node.getNodeName();
     this.variables = variables;
+    // 将属性以new Properties()的对象存入字段
     this.attributes = parseAttributes(node);
+    //
     this.body = parseBody(node);
   }
 

@@ -1,17 +1,17 @@
 /**
- *    Copyright ${license.git.copyrightYears} the original author or authors.
- *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ * Copyright ${license.git.copyrightYears} the original author or authors.
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.ibatis.parsing;
 
@@ -123,8 +123,12 @@ public class XPathParser {
   }
 
   public XPathParser(InputStream inputStream, boolean validation, Properties variables, EntityResolver entityResolver) {
+    //初始化当前类的四个成员变量validation、entityResolver、variables、xpath
     commonConstructor(validation, variables, entityResolver);
+
+    //InputSource，将inputStream包装成xml的流。初始化当前类的document对象，创建Document对象。
     this.document = createDocument(new InputSource(inputStream));
+    //至此，5个成员变量已经初始化好
   }
 
   public XPathParser(Document document, boolean validation, Properties variables, EntityResolver entityResolver) {
@@ -208,6 +212,8 @@ public class XPathParser {
   }
 
   public XNode evalNode(String expression) {
+    // 解析document对象，从指定节点expression
+    // 获取XNode
     return evalNode(document, expression);
   }
 
@@ -216,6 +222,7 @@ public class XPathParser {
     if (node == null) {
       return null;
     }
+    // XNode是mybatis封装的，代表xml节点的一个对象，包括configuration在内的每个节点都会走到这里
     return new XNode(this, node, variables);
   }
 
@@ -229,19 +236,30 @@ public class XPathParser {
 
   private Document createDocument(InputSource inputSource) {
     // important: this must only be called AFTER common constructor
+    // 配置文档解析工厂
     try {
+      // JDK提供的文档解析工厂对象
       DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+      // 设置是否安全地处理XML
       factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+      // 设置是否使用解析器将在解析文档时对其进行验证，控制DTD验证
       factory.setValidating(validation);
-
+      // 设置命名空间
       factory.setNamespaceAware(false);
+      // 忽略注释
       factory.setIgnoringComments(true);
+      // 忽略元素内容空白行
       factory.setIgnoringElementContentWhitespace(false);
+      // 是否将CDATA节点转换为文本节点
       factory.setCoalescing(false);
+      // 设置是否展开实体引用节点，这里是sql片段引用
       factory.setExpandEntityReferences(true);
 
+      // 工厂创建documentBuilder实例，设置约束规则，异常处理。解析xml流获取文档对象
       DocumentBuilder builder = factory.newDocumentBuilder();
+      // 设置解析mybatis.xml文档节点的解析器，也就是XMLMapperEntityResolver（加载本地的dtd约束）
       builder.setEntityResolver(entityResolver);
+      // 异常处理
       builder.setErrorHandler(new ErrorHandler() {
         @Override
         public void error(SAXParseException exception) throws SAXException {
@@ -258,6 +276,7 @@ public class XPathParser {
           // NOP
         }
       });
+      // 解析输入源返回document对象
       return builder.parse(inputSource);
     } catch (Exception e) {
       throw new BuilderException("Error creating document instance.  Cause: " + e, e);

@@ -78,11 +78,17 @@ public class XMLConfigBuilder extends BaseBuilder {
   }
 
   public XMLConfigBuilder(InputStream inputStream, String environment, Properties props) {
+    // 创建XPathParser对象，然后调用当前类的另一个重载构造方法。
+    // new XPathParser(...) 就是创建一个XPathPaser对象，里面有5个成员变量已经初始化好
     this(new XPathParser(inputStream, true, props, new XMLMapperEntityResolver()), environment, props);
   }
 
   private XMLConfigBuilder(XPathParser parser, String environment, Properties props) {
+    // 调用父类BaseBuilder的构造方法，初始化configuration核心配置对象。
+    // new configuration() 注册了类型别名 + 类型转换器 + 一些配置项，是对mybatis-config的封装
     super(new Configuration());
+
+    //记录错误信息
     ErrorContext.instance().resource("SQL Mapper Configuration");
     this.configuration.setVariables(props);
     this.parsed = false;

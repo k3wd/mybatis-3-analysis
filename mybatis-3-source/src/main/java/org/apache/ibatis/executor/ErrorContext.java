@@ -35,6 +35,7 @@ public class ErrorContext {
   }
 
   public static ErrorContext instance() {
+    //基于线程的单例模式
     ErrorContext context = LOCAL.get();
     if (context == null) {
       context = new ErrorContext();

@@ -19,7 +19,9 @@ import java.io.InputStream;
 public class Test {
     public static void main(String[] args) throws IOException {
         //第一步：读取mybatis-config.xml配置文件
-        InputStream inputStream = Resources.getResourceAsStream("mybatis-config.xml");
+        //InputStream inputStream = Resources.getResourceAsStream("mybatis-config.xml");
+        //InputStream inputStream = Test.class.getClassLoader().getResourceAsStream("mybatis-config.xml");
+        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("mybatis-config.xml");
 
         //第二步：构建SqlSessionFactory
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);

@@ -75,6 +75,7 @@ public class ClassLoaderWrapper {
    * @return the stream or null
    */
   public InputStream getResourceAsStream(String resource, ClassLoader classLoader) {
+    //getClassLoaders(classLoader) 获取一组classLoader，执行后拿到三个AppClassLoader
     return getResourceAsStream(resource, getClassLoaders(classLoader));
   }
 
@@ -113,9 +114,11 @@ public class ClassLoaderWrapper {
       if (null != cl) {
 
         // try to find the resource as passed
+        // 直接解析传入路径
         InputStream returnValue = cl.getResourceAsStream(resource);
 
         // now, some class loaders want this leading "/", so we'll add it and try again if we didn't find the resource
+        // 如果没有获取到文件，尝试从根路径获取
         if (null == returnValue) {
           returnValue = cl.getResourceAsStream("/" + resource);
         }
@@ -203,11 +206,11 @@ public class ClassLoaderWrapper {
 
   ClassLoader[] getClassLoaders(ClassLoader classLoader) {
     return new ClassLoader[]{
-        classLoader,
-        defaultClassLoader,
-        Thread.currentThread().getContextClassLoader(),
-        getClass().getClassLoader(),
-        systemClassLoader};
+      classLoader,
+      defaultClassLoader,
+      Thread.currentThread().getContextClassLoader(),
+      getClass().getClassLoader(),
+      systemClassLoader};
   }
 
 }
