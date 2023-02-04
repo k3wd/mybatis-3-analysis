@@ -21,6 +21,13 @@ import java.sql.Connection;
  * @author Clinton Begin
  */
 public enum TransactionIsolationLevel {
+  /**
+   * NONE                       不支持事务
+   * READ_COMMITTED             读已提交
+   * READ_UNCOMMITTED           读未提交
+   * REPEATABLE_READ            可重复读
+   * SERIALIZABLE               可序列化
+   */
   NONE(Connection.TRANSACTION_NONE),
   READ_COMMITTED(Connection.TRANSACTION_READ_COMMITTED),
   READ_UNCOMMITTED(Connection.TRANSACTION_READ_UNCOMMITTED),

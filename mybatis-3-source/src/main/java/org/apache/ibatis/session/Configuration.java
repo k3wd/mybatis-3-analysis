@@ -144,6 +144,7 @@ public class Configuration {
    */
   protected Class<?> configurationFactory;
 
+  // 负责存放mapper对象
   protected final MapperRegistry mapperRegistry = new MapperRegistry(this);
   protected final InterceptorChain interceptorChain = new InterceptorChain();
   protected final TypeHandlerRegistry typeHandlerRegistry = new TypeHandlerRegistry(this);
@@ -609,9 +610,11 @@ public class Configuration {
     } else {
       executor = new SimpleExecutor(this, transaction);
     }
+    // 默认为true，在解析config文件的时候读取的，包装器
     if (cacheEnabled) {
       executor = new CachingExecutor(executor);
     }
+    // 责任链模式，执行plugin的操作，比如分页操作
     executor = (Executor) interceptorChain.pluginAll(executor);
     return executor;
   }

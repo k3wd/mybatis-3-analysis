@@ -44,6 +44,10 @@ public class DefaultSqlSessionFactory implements SqlSessionFactory {
 
   @Override
   public SqlSession openSession() {
+    // 调用当前类的另一个方法打开一个SqlSession会话。
+    // param1：SIMPLE（default）, REUSE, BATCH。获取executor
+    // param2：事务隔离级别
+    // param3：自动提交
     return openSessionFromDataSource(configuration.getDefaultExecutorType(), null, false);
   }
 
@@ -88,12 +92,15 @@ public class DefaultSqlSessionFactory implements SqlSessionFactory {
   }
 
   private SqlSession openSessionFromDataSource(ExecutorType execType, TransactionIsolationLevel level, boolean autoCommit) {
+    //事务接口：包装一个数据库连接，处理该连接的生命周期包括：连接的创建、准备、提交/回滚、和关闭
     Transaction tx = null;
     try {
       final Environment environment = configuration.getEnvironment();
       final TransactionFactory transactionFactory = getTransactionFactoryFromEnvironment(environment);
+      // 创建事务，配置数据源，隔离级别，自动提交
       tx = transactionFactory.newTransaction(environment.getDataSource(), level, autoCommit);
       final Executor executor = configuration.newExecutor(tx, execType);
+      // 以上操作，是为了获取executor
       return new DefaultSqlSession(configuration, executor, autoCommit);
     } catch (Exception e) {
       closeTransaction(tx); // may have fetched a connection so lets call close()
@@ -126,6 +133,7 @@ public class DefaultSqlSessionFactory implements SqlSessionFactory {
   }
 
   private TransactionFactory getTransactionFactoryFromEnvironment(Environment environment) {
+    // 如果没有指定，则开启默认事务工厂
     if (environment == null || environment.getTransactionFactory() == null) {
       return new ManagedTransactionFactory();
     }

@@ -30,9 +30,11 @@ public class Test {
         SqlSession session = sqlSessionFactory.openSession();
 
         //第四步：获取Mapper接口对象
+        // targetProxy.getProxy()
         UsersMapper usersMapper = session.getMapper(UsersMapper.class);
-
+        
         //第五步：调用Mapper接口对象的方法操作数据库；
+        // proxy.selectByPrimaryKey
         Users user = usersMapper.selectByPrimaryKey(1);
 
         //第六步：业务处理

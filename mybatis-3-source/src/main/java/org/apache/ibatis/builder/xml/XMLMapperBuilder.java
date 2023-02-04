@@ -77,6 +77,7 @@ public class XMLMapperBuilder extends BaseBuilder {
   }
 
   public XMLMapperBuilder(InputStream inputStream, Configuration configuration, String resource, Map<String, XNode> sqlFragments) {
+    // XPathParser负责解析读到的mapper文件
     this(new XPathParser(inputStream, true, configuration.getVariables(), new XMLMapperEntityResolver()),
         configuration, resource, sqlFragments);
   }
@@ -90,9 +91,12 @@ public class XMLMapperBuilder extends BaseBuilder {
   }
 
   public void parse() {
+    // configuration中没有加载过的mapper
     if (!configuration.isResourceLoaded(resource)) {
+      // 将装入XPathParser的mapper.xml进行解析
       configurationElement(parser.evalNode("/mapper"));
       configuration.addLoadedResource(resource);
+      // 根据刚才解析出来的命名空间反射，并存入configuration的MapperRegistry.knownMaps中
       bindMapperForNamespace();
     }
 
@@ -422,6 +426,7 @@ public class XMLMapperBuilder extends BaseBuilder {
     if (namespace != null) {
       Class<?> boundType = null;
       try {
+        // 创建指定类
         boundType = Resources.classForName(namespace);
       } catch (ClassNotFoundException e) {
         //ignore, bound type is not required
