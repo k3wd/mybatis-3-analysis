@@ -56,6 +56,7 @@ public class BeanWrapper extends BaseWrapper {
       Object collection = resolveCollection(prop, object);
       setCollectionValue(prop, collection, value);
     } else {
+      // 获取set方法，执行
       setBeanProperty(prop, object, value);
     }
   }

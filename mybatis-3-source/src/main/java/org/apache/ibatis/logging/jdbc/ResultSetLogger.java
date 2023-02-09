@@ -66,6 +66,7 @@ public final class ResultSetLogger extends BaseJdbcLogger implements InvocationH
       if (Object.class.equals(method.getDeclaringClass())) {
         return method.invoke(this, params);
       }
+      // 使用jdbc方法设置值
       Object o = method.invoke(rs, params);
       if ("next".equals(method.getName())) {
         if ((Boolean) o) {

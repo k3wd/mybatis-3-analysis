@@ -218,7 +218,9 @@ public class UnpooledDataSource implements DataSource {
 
   private Connection doGetConnection(Properties properties) throws SQLException {
     initializeDriver();
+    // JDBC4Connection
     Connection connection = DriverManager.getConnection(url, properties);
+    // this对获取的连接设置默认网络超时时间、是否自动提交、事务隔离级别
     configureConnection(connection);
     return connection;
   }

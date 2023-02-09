@@ -1,6 +1,9 @@
 package com.k3wd.mapper;
 
 import com.k3wd.model.Users;
+import org.apache.ibatis.session.RowBounds;
+
+import java.util.List;
 
 public interface UsersMapper {
 
@@ -15,4 +18,6 @@ public interface UsersMapper {
     int updateByPrimaryKeySelective(Users record);
 
     int updateByPrimaryKey(Users record);
+
+    List<Users> listByPrimaryKey(RowBounds rowBounds);
 }

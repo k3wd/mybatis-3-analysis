@@ -79,9 +79,11 @@ public class MapperProxy<T> implements InvocationHandler, Serializable {
   @Override
   public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
     try {
+      // 如果是Object类的方法，直接执行
       if (Object.class.equals(method.getDeclaringClass())) {
         return method.invoke(this, args);
       } else {
+        // cachedInvoker缓存执行器判断是否已经存在传入方法，按需缓存，然后执行方法
         return cachedInvoker(method).invoke(proxy, method, args, sqlSession);
       }
     } catch (Throwable t) {
@@ -91,6 +93,7 @@ public class MapperProxy<T> implements InvocationHandler, Serializable {
 
   private MapperMethodInvoker cachedInvoker(Method method) throws Throwable {
     try {
+      // 如果没有，执行后面的方法，method参数是要判断的对象，后面是执行的方法。
       return methodCache.computeIfAbsent(method, m -> {
         if (m.isDefault()) {
           try {
@@ -104,6 +107,10 @@ public class MapperProxy<T> implements InvocationHandler, Serializable {
             throw new RuntimeException(e);
           }
         } else {
+          // MapperMethod有两个变量
+          //  SqlCommand command： 保存sql全路径和类型
+          //  MethodSignature method：方法签名对象，包括入参，返回类型，名称，方法本身。
+          // 将创建的MapperMathod对象交给PlainMethodInvoker
           return new PlainMethodInvoker(new MapperMethod(mapperInterface, method, sqlSession.getConfiguration()));
         }
       });

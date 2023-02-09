@@ -64,6 +64,7 @@ public class Reflector {
     type = clazz;
     addDefaultConstructor(clazz);
     addGetMethods(clazz);
+    // 给set方法设置值
     addSetMethods(clazz);
     addFields(clazz);
     readablePropertyNames = getMethods.keySet().toArray(new String[0]);

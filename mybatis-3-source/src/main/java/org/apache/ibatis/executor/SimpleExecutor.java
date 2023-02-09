@@ -58,10 +58,14 @@ public class SimpleExecutor extends BaseExecutor {
     Statement stmt = null;
     try {
       Configuration configuration = ms.getConfiguration();
+      // 根据语句类型获取语句
       StatementHandler handler = configuration.newStatementHandler(wrapper, ms, parameter, rowBounds, resultHandler, boundSql);
+      // 获取代理的连接，获取代理的语句，设置初始参数，获取要最终要执行的sql
       stmt = prepareStatement(handler, ms.getStatementLog());
+      // 查询，并处理结果集
       return handler.query(stmt, resultHandler);
     } finally {
+      // 释放资源
       closeStatement(stmt);
     }
   }
@@ -83,8 +87,11 @@ public class SimpleExecutor extends BaseExecutor {
 
   private Statement prepareStatement(StatementHandler handler, Log statementLog) throws SQLException {
     Statement stmt;
+    // 获取连接，先用pooledConnection代理一层，再用connectionLogger代理一层
     Connection connection = getConnection(statementLog);
+    // 打印准备好的语句，获取的过程中，在connectionLogger中用日志具体实现代理原生预编译语句
     stmt = handler.prepare(connection, transaction.getTimeout());
+    // 将查询参数替换预编译的占位符
     handler.parameterize(stmt);
     return stmt;
   }

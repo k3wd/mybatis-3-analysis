@@ -4,12 +4,15 @@ import com.k3wd.mapper.UsersMapper;
 import com.k3wd.model.Users;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.mapping.BoundSql;
+import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 /**
  * @author k3wd
@@ -34,10 +37,15 @@ public class Test {
         UsersMapper usersMapper = session.getMapper(UsersMapper.class);
         
         //第五步：调用Mapper接口对象的方法操作数据库；
+//        List<Users> usersList = usersMapper.listByPrimaryKey(new RowBounds(2,3));
         // proxy.selectByPrimaryKey
         Users user = usersMapper.selectByPrimaryKey(1);
 
         //第六步：业务处理
-        log.info("查询结果: " + user.getId() + "--" + user.getPhone());
+//        log.info("查询结果: " + user.getId() + "--" + user.getPhone());
+        
+        //session提交并关闭
+        session.commit();
+        session.close();
     }
 }

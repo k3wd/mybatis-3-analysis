@@ -137,6 +137,7 @@ public class DefaultSqlSession implements SqlSession {
 
   @Override
   public <E> List<E> selectList(String statement, Object parameter) {
+    // 默认分页，0~2147483647
     return this.selectList(statement, parameter, RowBounds.DEFAULT);
   }
 

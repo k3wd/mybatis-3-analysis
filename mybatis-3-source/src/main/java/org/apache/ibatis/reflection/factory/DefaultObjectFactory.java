@@ -48,6 +48,7 @@ public class DefaultObjectFactory implements ObjectFactory, Serializable {
   @SuppressWarnings("unchecked")
   @Override
   public <T> T create(Class<T> type, List<Class<?>> constructorArgTypes, List<Object> constructorArgs) {
+    // 判断是否为容器类型如返回的是List，在这里会分配成子类实现ArrayList
     Class<?> classToCreate = resolveInterface(type);
     // we know types are assignable
     return (T) instantiateClass(classToCreate, constructorArgTypes, constructorArgs);
@@ -56,6 +57,7 @@ public class DefaultObjectFactory implements ObjectFactory, Serializable {
   private  <T> T instantiateClass(Class<T> type, List<Class<?>> constructorArgTypes, List<Object> constructorArgs) {
     try {
       Constructor<T> constructor;
+      // 没有带参构造和参数，获取默认构造s
       if (constructorArgTypes == null || constructorArgs == null) {
         constructor = type.getDeclaredConstructor();
         try {
@@ -91,6 +93,7 @@ public class DefaultObjectFactory implements ObjectFactory, Serializable {
 
   protected Class<?> resolveInterface(Class<?> type) {
     Class<?> classToCreate;
+    // 是默认分配容器类型
     if (type == List.class || type == Collection.class || type == Iterable.class) {
       classToCreate = ArrayList.class;
     } else if (type == Map.class) {

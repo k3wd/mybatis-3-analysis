@@ -24,8 +24,11 @@
     from users
     where id = #{id,jdbcType=INTEGER}
   </select>
+    <select id="listByPrimaryKey" useCache="true" resultType="com.k3wd.model.Users">
+      select <include refid="Base_Column_List" /> from users
+    </select>
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from users
     where id = #{id,jdbcType=INTEGER}
   </delete>

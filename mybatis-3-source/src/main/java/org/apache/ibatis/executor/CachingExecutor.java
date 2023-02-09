@@ -98,7 +98,9 @@ public class CachingExecutor implements Executor {
       if (ms.isUseCache() && resultHandler == null) {
         ensureNoOutParams(ms, boundSql);
         @SuppressWarnings("unchecked")
+        // 二级缓存查询
         List<E> list = (List<E>) tcm.getObject(cache, key);
+        // 一级缓存查询
         if (list == null) {
           list = delegate.query(ms, parameterObject, rowBounds, resultHandler, key, boundSql);
           tcm.putObject(cache, key, list); // issue #578 and #116
@@ -106,6 +108,7 @@ public class CachingExecutor implements Executor {
         return list;
       }
     }
+    // 调用被包装的Executor执行查询方法。CachingExecutor是一个典型的包装器实现
     return delegate.query(ms, parameterObject, rowBounds, resultHandler, key, boundSql);
   }
 

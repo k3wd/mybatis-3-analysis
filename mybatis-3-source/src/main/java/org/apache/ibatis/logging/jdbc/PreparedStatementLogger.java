@@ -47,6 +47,7 @@ public final class PreparedStatementLogger extends BaseJdbcLogger implements Inv
       if (Object.class.equals(method.getDeclaringClass())) {
         return method.invoke(this, params);
       }
+      // 打印参数
       if (EXECUTE_METHODS.contains(method.getName())) {
         if (isDebugEnabled()) {
           debug("Parameters: " + getParameterValueString(), true);
@@ -93,6 +94,7 @@ public final class PreparedStatementLogger extends BaseJdbcLogger implements Inv
   public static PreparedStatement newInstance(PreparedStatement stmt, Log statementLog, int queryStack) {
     InvocationHandler handler = new PreparedStatementLogger(stmt, statementLog, queryStack);
     ClassLoader cl = PreparedStatement.class.getClassLoader();
+    // 对原生的预编译语句进行代理
     return (PreparedStatement) Proxy.newProxyInstance(cl, new Class[]{PreparedStatement.class, CallableStatement.class}, handler);
   }
 

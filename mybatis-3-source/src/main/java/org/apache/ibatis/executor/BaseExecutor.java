@@ -87,6 +87,7 @@ public abstract class BaseExecutor implements Executor {
         rollback(forceRollback);
       } finally {
         if (transaction != null) {
+          //关闭事务，
           transaction.close();
         }
       }
@@ -153,6 +154,7 @@ public abstract class BaseExecutor implements Executor {
       if (list != null) {
         handleLocallyCachedOutputParameters(ms, key, parameter, boundSql);
       } else {
+        // 查询
         list = queryFromDatabase(ms, parameter, rowBounds, resultHandler, key, boundSql);
       }
     } finally {
@@ -321,6 +323,7 @@ public abstract class BaseExecutor implements Executor {
     List<E> list;
     localCache.putObject(key, EXECUTION_PLACEHOLDER);
     try {
+      // 根据不同的执行器调用查询方法。
       list = doQuery(ms, parameter, rowBounds, resultHandler, boundSql);
     } finally {
       localCache.removeObject(key);

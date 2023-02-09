@@ -49,11 +49,13 @@ class PooledConnection implements InvocationHandler {
    */
   public PooledConnection(Connection connection, PooledDataSource dataSource) {
     this.hashCode = connection.hashCode();
+    // 真实连接是JDBC4Connection
     this.realConnection = connection;
     this.dataSource = dataSource;
     this.createdTimestamp = System.currentTimeMillis();
     this.lastUsedTimestamp = System.currentTimeMillis();
     this.valid = true;
+    // 创建代理连接，用PooledConnection代理JDBC4Connection
     this.proxyConnection = (Connection) Proxy.newProxyInstance(Connection.class.getClassLoader(), IFACES, this);
   }
 
@@ -232,11 +234,13 @@ class PooledConnection implements InvocationHandler {
   @Override
   public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
     String methodName = method.getName();
+    // 如果是关闭的方法，将连接对象归还给连接池
     if (CLOSE.equals(methodName)) {
       dataSource.pushConnection(this);
       return null;
     }
     try {
+      // 执行前检查连接是否可用
       if (!Object.class.equals(method.getDeclaringClass())) {
         // issue #579 toString() should never fail
         // throw an SQLException instead of a Runtime

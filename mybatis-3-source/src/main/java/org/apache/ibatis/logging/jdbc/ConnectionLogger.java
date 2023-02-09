@@ -48,11 +48,14 @@ public final class ConnectionLogger extends BaseJdbcLogger implements Invocation
       if (Object.class.equals(method.getDeclaringClass())) {
         return method.invoke(this, params);
       }
+      // 根据不同的语句，进行具体的语句日志代理
       if ("prepareStatement".equals(method.getName())) {
         if (isDebugEnabled()) {
           debug(" Preparing: " + removeBreakingWhitespace((String) params[0]), true);
         }
+        // 执行PooledConnection代理的jdbc4connection对象，获取preparedStatement语句
         PreparedStatement stmt = (PreparedStatement) method.invoke(connection, params);
+        // 使用PreparedStatementLogger代理原生语句，PreparedStatementLogger可以在执行的时候打印Parameters
         stmt = PreparedStatementLogger.newInstance(stmt, statementLog, queryStack);
         return stmt;
       } else if ("prepareCall".equals(method.getName())) {
@@ -83,6 +86,7 @@ public final class ConnectionLogger extends BaseJdbcLogger implements Invocation
   public static Connection newInstance(Connection conn, Log statementLog, int queryStack) {
     InvocationHandler handler = new ConnectionLogger(conn, statementLog, queryStack);
     ClassLoader cl = Connection.class.getClassLoader();
+    //使用ConnectionLogger对象代理被pooledConnection代理的JDBC4Connection对象，ConnectionLogger增加了日志功能
     return (Connection) Proxy.newProxyInstance(cl, new Class[]{Connection.class}, handler);
   }
 

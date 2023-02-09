@@ -159,6 +159,7 @@ public class ResultSetWrapper {
   }
 
   public List<String> getMappedColumnNames(ResultMap resultMap, String columnPrefix) throws SQLException {
+    // 获取resultMap对应的字段名称，键为 resultMap的id + columnPrefix的前缀
     List<String> mappedColumnNames = mappedColumnNamesMap.get(getMapKey(resultMap, columnPrefix));
     if (mappedColumnNames == null) {
       loadMappedAndUnmappedColumnNames(resultMap, columnPrefix);
