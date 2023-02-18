@@ -105,15 +105,20 @@ public class ParamNameResolver {
    * Multiple parameters are named using the naming rule.
    * In addition to the default names, this method also adds the generic names (param1, param2,
    * ...).
+   * 
+   * 返回单个非特殊参数，不带名称。使用命名规则命名多个参数。
+   * 除了默认名称外，此方法还添加了通用名称 (param1，param2，...)。
    * </p>
    */
   public Object getNamedParams(Object[] args) {
     final int paramCount = names.size();
     if (args == null || paramCount == 0) {
       return null;
+      // 有一个参数用arg0
     } else if (!hasParamAnnotation && paramCount == 1) {
       return args[names.firstKey()];
     } else {
+      // 多个就生成param1、param2...
       final Map<String, Object> param = new ParamMap<>();
       int i = 0;
       for (Map.Entry<Integer, String> entry : names.entrySet()) {

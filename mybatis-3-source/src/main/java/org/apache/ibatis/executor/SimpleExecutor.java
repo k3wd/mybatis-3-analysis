@@ -58,9 +58,9 @@ public class SimpleExecutor extends BaseExecutor {
     Statement stmt = null;
     try {
       Configuration configuration = ms.getConfiguration();
-      // 根据语句类型获取语句
+      // 根据语句类型获取语句处理器
       StatementHandler handler = configuration.newStatementHandler(wrapper, ms, parameter, rowBounds, resultHandler, boundSql);
-      // 获取代理的连接，获取代理的语句，设置初始参数，获取要最终要执行的sql
+      // 获取代理的连接+获取代理的语句，设置初始参数，获取要最终要执行的sql
       stmt = prepareStatement(handler, ms.getStatementLog());
       // 查询，并处理结果集
       return handler.query(stmt, resultHandler);

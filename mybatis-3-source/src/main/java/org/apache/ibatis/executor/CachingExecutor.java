@@ -119,7 +119,9 @@ public class CachingExecutor implements Executor {
 
   @Override
   public void commit(boolean required) throws SQLException {
+//    执行委托的提交操作
     delegate.commit(required);
+//    提交事务管理器，以确保事务的完整性。
     tcm.commit();
   }
 

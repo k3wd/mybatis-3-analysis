@@ -55,6 +55,7 @@ public class MapperMethod {
   }
 
   public Object execute(SqlSession sqlSession, Object[] args) {
+    // 判断类型然后调用返回类型对应的查询方法
     Object result;
     switch (command.getType()) {
       case INSERT: {
@@ -83,6 +84,7 @@ public class MapperMethod {
         } else if (method.returnsCursor()) {
           result = executeForCursor(sqlSession, args);
         } else {
+          // 使用命名规则命名参数，如单个arg0，多个param1、param2...
           Object param = method.convertArgsToSqlCommandParam(args);
           result = sqlSession.selectOne(command.getName(), param);
           if (method.returnsOptional()

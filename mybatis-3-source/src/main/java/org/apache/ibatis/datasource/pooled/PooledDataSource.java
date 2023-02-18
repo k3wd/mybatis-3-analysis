@@ -507,6 +507,7 @@ public class PooledDataSource implements DataSource {
                 }
                 long wt = System.currentTimeMillis();
                 // 等一会再加入连接创建的队伍
+                // 采用等待超时模式
                 state.wait(poolTimeToWait);
                 // 累计等待时间
                 state.accumulatedWaitTime += System.currentTimeMillis() - wt;
