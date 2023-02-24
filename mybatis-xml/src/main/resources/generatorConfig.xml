@@ -37,18 +37,18 @@
         -->
 
         <!-- 生成model类，targetPackage指定model类的包名， targetProject指定生成的model放在eclipse的哪个工程下面-->
-        <javaModelGenerator targetPackage="com.k3wd.model" targetProject="src/main/java">
+        <javaModelGenerator targetPackage="com.k3wd.mybatis.model" targetProject="src/main/java">
             <property name="enableSubPackages" value="false" />
             <property name="trimStrings" value="false" />
         </javaModelGenerator>
 
         <!-- 生成MyBatis的Mapper.xml文件，targetPackage指定mapper.xml文件的包名， targetProject指定生成的mapper.xml放在eclipse的哪个工程下面 -->
-        <sqlMapGenerator targetPackage="com.k3wd.mapper" targetProject="src/main/java">
+        <sqlMapGenerator targetPackage="com.k3wd.mybatis.mapper" targetProject="src/main/java">
             <property name="enableSubPackages" value="false" />
         </sqlMapGenerator>
 
         <!-- 生成MyBatis的Mapper接口类文件,targetPackage指定Mapper接口类的包名， targetProject指定生成的Mapper接口放在eclipse的哪个工程下面 -->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.k3wd.mapper" targetProject="src/main/java">
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.k3wd.mybatis.mapper" targetProject="src/main/java">
             <property name="enableSubPackages" value="false" />
         </javaClientGenerator>
 

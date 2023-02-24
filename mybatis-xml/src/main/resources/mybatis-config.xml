@@ -20,13 +20,13 @@
 
     <!--类型别名-->
     <typeAliases>
-        <typeAlias type="com.k3wd.model.Account" alias="Account"/>
+        <typeAlias type="com.k3wd.mybatis.model.Account" alias="Account"/>
     </typeAliases>
 
     <typeHandlers>
         <!--自定义的类型转换器-->
-        <typeHandler handler="com.k3wd.type.CryptHandlerType"
-                     javaType="com.k3wd.model.IdCardType"/>
+        <typeHandler handler="com.k3wd.mybatis.type.CryptHandlerType"
+                     javaType="com.k3wd.mybatis.model.IdCardType"/>
     </typeHandlers>
 
     <!--插件-->
@@ -71,8 +71,8 @@
 
     <!--映射器-->
     <mappers>
-        <mapper resource="com/k3wd/mapper/AccountMapper.xml"/>
-        <mapper resource="com/k3wd/mapper/UsersMapper.xml"/>
+        <mapper resource="com/k3wd/mybatis/mapper/AccountMapper.xml"/>
+        <mapper resource="com/k3wd/mybatis/mapper/UsersMapper.xml"/>
     </mappers>
 
 </configuration>
