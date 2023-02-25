@@ -54,10 +54,17 @@ public class DefaultObjectFactory implements ObjectFactory, Serializable {
     return (T) instantiateClass(classToCreate, constructorArgTypes, constructorArgs);
   }
 
+  /**
+   * 创建类的实例
+   * @param type 类型
+   * @param constructorArgTypes 参数类型
+   * @param constructorArgs 参数
+   * @return 创建的实例
+   */
   private  <T> T instantiateClass(Class<T> type, List<Class<?>> constructorArgTypes, List<Object> constructorArgs) {
     try {
       Constructor<T> constructor;
-      // 没有带参构造和参数，获取默认构造s
+      // 没有带参构造和参数，获取默认构造
       if (constructorArgTypes == null || constructorArgs == null) {
         constructor = type.getDeclaredConstructor();
         try {
@@ -91,6 +98,11 @@ public class DefaultObjectFactory implements ObjectFactory, Serializable {
     }
   }
 
+  /**
+   * 传入接口，给出符合该接口的实现
+   * @param type 接口
+   * @return 结果
+   */
   protected Class<?> resolveInterface(Class<?> type) {
     Class<?> classToCreate;
     // 是默认分配容器类型

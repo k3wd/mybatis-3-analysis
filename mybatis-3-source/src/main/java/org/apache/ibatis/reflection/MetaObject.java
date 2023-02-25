@@ -28,6 +28,8 @@ import org.apache.ibatis.reflection.wrapper.ObjectWrapper;
 import org.apache.ibatis.reflection.wrapper.ObjectWrapperFactory;
 
 /**
+ * 主要是Mybatis中对象的实例，它提供了对象的属性访问、属性设置和属性删除的方法，可以将MetaClass中的方法应用到对象实例上。
+ *
  * @author Clinton Begin
  */
 public class MetaObject {
@@ -44,6 +46,7 @@ public class MetaObject {
     this.objectWrapperFactory = objectWrapperFactory;
     this.reflectorFactory = reflectorFactory;
 
+    // 装饰源对象
     if (object instanceof ObjectWrapper) {
       this.objectWrapper = (ObjectWrapper) object;
     } else if (objectWrapperFactory.hasWrapperFor(object)) {

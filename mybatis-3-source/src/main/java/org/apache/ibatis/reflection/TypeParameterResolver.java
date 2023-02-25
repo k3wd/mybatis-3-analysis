@@ -26,11 +26,13 @@ import java.lang.reflect.WildcardType;
 import java.util.Arrays;
 
 /**
+ * 泛型解析器
  * @author Iwao AVE!
  */
 public class TypeParameterResolver {
 
   /**
+   * 解析属性类型
    * @return The field type as {@link Type}. If it has type parameters in the declaration,<br>
    *         they will be resolved to the actual runtime {@link Type}s.
    */
@@ -41,6 +43,7 @@ public class TypeParameterResolver {
   }
 
   /**
+   * 解析返回类型
    * @return The return type of the method as {@link Type}. If it has type parameters in the declaration,<br>
    *         they will be resolved to the actual runtime {@link Type}s.
    */
@@ -50,6 +53,9 @@ public class TypeParameterResolver {
     return resolveType(returnType, srcType, declaringClass);
   }
 
+  /**
+   * 解析参数类型
+   */
   /**
    * @return The parameter types of the method as an array of {@link Type}s. If they have type parameters in the declaration,<br>
    *         they will be resolved to the actual runtime {@link Type}s.
@@ -64,6 +70,14 @@ public class TypeParameterResolver {
     return result;
   }
 
+  /**
+   * 核心解析方法
+   *
+   * @param type 变量的类型
+   * @param srcType 变量所属的类
+   * @param declaringClass 定义变量的类
+   * @return 结果
+   */
   private static Type resolveType(Type type, Type srcType, Class<?> declaringClass) {
     if (type instanceof TypeVariable) {
       return resolveTypeVar((TypeVariable<?>) type, srcType, declaringClass);

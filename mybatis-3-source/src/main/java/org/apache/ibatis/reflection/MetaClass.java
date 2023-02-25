@@ -27,6 +27,8 @@ import org.apache.ibatis.reflection.invoker.MethodInvoker;
 import org.apache.ibatis.reflection.property.PropertyTokenizer;
 
 /**
+ * 主要是Mybatis中对象的封装，用来描述对象的元信息，它提供了很多操作对象的方法，封装了对象的创建、访问、设置和删除等操作。
+ *
  * @author Clinton Begin
  */
 public class MetaClass {

@@ -49,12 +49,19 @@ import org.apache.ibatis.reflection.property.PropertyNamer;
  */
 public class Reflector {
 
+  // 要被反射解析的类
   private final Class<?> type;
+  // 能够读的属性列表，即有get方法的属性列表
   private final String[] readablePropertyNames;
+  // 能够写的属性列表，即有set方法的属性列表
   private final String[] writablePropertyNames;
+  // set方法映射表。键为属性名，值为对应的set方法
   private final Map<String, Invoker> setMethods = new HashMap<>();
+  // get方法映射表。键为属性名，值为对应的get方法
   private final Map<String, Invoker> getMethods = new HashMap<>();
+  // set方法输入类型。键为属性名，值为对应的该属性的set方法的类型（实际为set方法的第一个参数的类型）
   private final Map<String, Class<?>> setTypes = new HashMap<>();
+  // get方法输入类型。键为属性名，值为对应的该属性的get方法的类型（实际为get方法的返回值类型）
   private final Map<String, Class<?>> getTypes = new HashMap<>();
   private Constructor<?> defaultConstructor;
 

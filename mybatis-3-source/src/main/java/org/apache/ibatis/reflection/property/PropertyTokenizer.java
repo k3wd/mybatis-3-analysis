@@ -26,6 +26,16 @@ public class PropertyTokenizer implements Iterator<PropertyTokenizer> {
   private String index;
   private final String children;
 
+    /**
+     * 属性标记。传入student[sId].name
+     * 会被拆解成：
+     * student
+     * student[sId]
+     * sId
+     * name
+     * @param fullname
+     * @return 结果
+     */
   public PropertyTokenizer(String fullname) {
     int delim = fullname.indexOf('.');
     if (delim > -1) {

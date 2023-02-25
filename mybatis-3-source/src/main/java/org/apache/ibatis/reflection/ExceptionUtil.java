@@ -27,6 +27,11 @@ public class ExceptionUtil {
     // Prevent Instantiation
   }
 
+  /**
+   * 异常拆包
+   * @param wrapped
+   * @return 结果
+   */
   public static Throwable unwrapThrowable(Throwable wrapped) {
     Throwable unwrapped = wrapped;
     while (true) {
